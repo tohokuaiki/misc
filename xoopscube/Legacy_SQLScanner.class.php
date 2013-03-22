@@ -74,7 +74,7 @@ class Legacy_SQLScanner extends EasyLex_SQLScanner
 				$t_lines[$idx][$op_idx]->mValue = str_replace($t_search, $t_replace, $t_lines[$idx][$op_idx]->mValue);
 			}
 		}
-        $this->type2engine(&$t_lines);
+		$this->type2engine(&$t_lines);
 		return $t_lines;
 	}
     
