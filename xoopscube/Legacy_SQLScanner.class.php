@@ -89,7 +89,7 @@ class Legacy_SQLScanner extends EasyLex_SQLScanner
     {
         $mysql_ver = function_exists('mysqli_get_server_info')
           ? mysqli_get_server_info() 
-            :(function_exists('mysql_get_server_info') ?  mysql_get_server_info() : '5.5.5');
+            :(function_exists('mysql_get_server_info') ?  mysql_get_server_info() : '4.0');
             
         if (version_compare(strtolower($mysql_ver), "5.5.0") >= 0){
             foreach ($lines as $line){
