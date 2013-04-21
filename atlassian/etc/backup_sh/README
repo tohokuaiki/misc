@@ -1,0 +1,9 @@
+Backup Confluence and JIRA backup shell script 
+Require PHP5 and pear/DB 
+you need 
+$ apt-get install php pear
+$ pear install DB
+
+[Usage]
+1. setting about your data directory about confluence and jira at server.ini
+2. cron sh/backup.sh
