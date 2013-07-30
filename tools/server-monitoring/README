@@ -1,0 +1,15 @@
+# simple HTTPD server monitor tool.
+
+cron this script for each monitor time step.
+
+dead server will be listed to server-monitoring/trouble_servers .
+if server listed up this file, next check is skipped.
+if trouble is exit, delete this file or remove server entry.
+
+<ja>
+# 簡易HTTPDサーバモニター
+cronで5分に1回とかまわしてください。
+何かトラブルがあった場合はメールで通知します。
+トラブルがあったサーバはserver-monitoring/trouble_serversに記述され、
+次のチェックはスキップします。（いつもメールがくるといやなので）
+トラブルを解決したらこのファイルからそのサーバのエントリーを消してください。
