@@ -1,0 +1,22 @@
+;shutdown/startup
+basedir=/home/wikiworks/confluence/src
+
+
+[kod-confluence]
+; notworking confluence
+expired=true
+shutdown=8106
+startup=8186
+
+[word.wikiworks.jp]
+version=3.3.3
+; path specified confluence
+path=/home/wikiworks/confluence/src/3.3.3/word
+shutdown=8100
+startup=8180
+
+[evalution01]
+; path is $basedir./$version/$confluence_name => /home/wikiworks/confluence/src/4.3.7/evalution01
+version=4.3.7
+shutdown=8109
+startup=8189
