@@ -19,7 +19,7 @@ foreach ($config as $conf_name => $confluence){
     
     // down check
     $url = sprintf('http://localhost:%d/login.action', $confluence['startup']);
-    $url_check = system_ex("wget -O - --spider -nv $url 2>&1");
+    $url_check = system_ex("wget -O - --spider -nv --timeout=30 --tries=2 $url 2>&1");
     
     if (strrpos($url_check, "200 OK")){
         // ok
