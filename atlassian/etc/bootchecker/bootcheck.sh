@@ -1,16 +1,16 @@
 #!/usr/bin/php
 <?php
-$config_file = dirname(__FILE__).'/list.txt';
+$config_file = dirname(__FILE__).'/atlassian_applist.txt';
 $config = parse_ini_file($config_file, true);
 
 $basedir = $config['basedir'];
 
-foreach ($config as $conf_name => $confluence){
-    if (!is_array($confluence) ||
-        isset($confluence['expired']) && $confluence['expired']) continue;
+foreach ($config as $app_name => $app){
+    if (!is_array($app) ||
+        isset($app['expired']) && $app['expired']) continue;
         
-    $path = !isset($confluence['path']) ? sprintf('%s/%s/%s', $basedir, $confluence['version'], $conf_name) : $confluence['path'];
-    
+    $path = !isset($app['path']) ? sprintf('%s/%s/src/%s/%s', $basedir, $app['app'], $app['version'], $app_name) : $app['path'];
+
     if (!is_dir($path)) continue;
     
     $pgrep_cmd    = sprintf('pgrep -f %s', $path);
@@ -18,10 +18,23 @@ foreach ($config as $conf_name => $confluence){
     $startup_cmd  = $path.'/bin/startup.sh';
     
     // down check
-    $url = sprintf('http://localhost:%d/login.action', $confluence['startup']);
-    $url_check = system_ex("wget -O - --spider -nv --timeout=30 --tries=2 $url 2>&1");
+    $entry_point = '';
+    switch ($app['app'])
+    {
+      case 'confluence';
+        $entry_point = 'login.action';
+        break;
+      case 'jira':
+      default:
+        $entry_point = 'secure/Dashboard.jspa';
+        break;
+    }
+    
+    $url = sprintf('http://localhost:%d/%s', $app['startup'], $entry_point);
+    $url_check = system_ex("wget -O - --spider -nv $url 2>&1");
     
     if (strrpos($url_check, "200 OK")){
+        //printf("%s => %s\n", $app_name, $url_check);
         // ok
         continue;
     }
