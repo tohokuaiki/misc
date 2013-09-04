@@ -23,3 +23,6 @@ gitリポジトリのデータをioncubeを使って暗号化・ライセンス�
 |   `-- tinycms
 |-- ic_createlicense.sh
 `-- ic_deploy.sh
+
+TODO: 
+* obfuscate するためのファイルを指定できるように
