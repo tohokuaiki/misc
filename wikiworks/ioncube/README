@@ -1,6 +1,8 @@
 ioncubeで暗号化する際のサンプルスクリプト
 gitリポジトリのデータをioncubeを使って暗号化・ライセンス化してデプロイする。
 
+# 下記の実行前に ic_createlisence.sh と ic_deploy.sh のPASSPHRASE変数を一致させておくこと。
+
 # ライセンスファイルの作成
 ./ic_createlicense.sh 有効期限 deploy先のサーバのMacアドレス
 # deployディレクトリに暗号化したPHPを配置。引数doを付けて実行。無しだとdry実行
