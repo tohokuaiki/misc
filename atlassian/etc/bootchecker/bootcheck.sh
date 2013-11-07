@@ -1,6 +1,22 @@
 #!/usr/bin/php
 <?php
-$config_file = dirname(__FILE__).'/atlassian_applist.txt';
+$config_file  = dirname(__FILE__).'/atlassian_applist.txt';
+$running_file = $config_file.".run";
+
+if (file_exists($running_file)){
+    $r_pid = trim(file_get_contents($running_file));
+    if (!trim(system_ex("ps h ".$r_pid))){
+        printf("PID [%d] is not exists.\n", $r_pid);
+        unlink($running_file);
+    }
+    else {
+        printf("bootcheck script is running PID[%d]\n", $r_pid);
+        exit;
+    }
+}
+
+file_put_contents($running_file, getmypid());
+
 $config = parse_ini_file($config_file, true);
 
 $basedir = $config['basedir'];
@@ -31,10 +47,11 @@ foreach ($config as $app_name => $app){
     }
     
     $url = sprintf('http://localhost:%d/%s', $app['startup'], $entry_point);
-    $url_check = system_ex("wget -O - --spider -nv $url 2>&1");
+//    print $url."\n";
+    $url_check = system_ex("wget -T 90 -t 2 -O - --spider -nv $url 2>&1");
     
     if (strrpos($url_check, "200 OK")){
-        //printf("%s => %s\n", $app_name, $url_check);
+        // printf("%s => %s\n", $app_name, $url_check);
         // ok
         continue;
     }
@@ -52,10 +69,11 @@ foreach ($config as $app_name => $app){
     }
     // startup
     system_ex($startup_cmd);
-    echo $startup_cmd."\n";
+    // echo $startup_cmd."\n";
+    printf("[%s] %s\n", date('Y/m/d H:i:s'), $startup_cmd);
 }
 
-
+unlink($running_file);
 
 
 function system_ex($cmd)
