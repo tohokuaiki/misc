@@ -1,5 +1,8 @@
 <html>
-<head><title>iptables subscriber</title></head>
+<head>
+  <title>iptables subscriber</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+</head>
 <body>
 <?php
 if (isset($_SERVER['AUTH_TYPE']) &&
