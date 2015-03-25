@@ -1,12 +1,12 @@
 #!/usr/bin/php
 <?php
-$arg = $_SERVER['argv'];
+$arg = $_SERVER['argv']; 
 if (count($arg) <= 1){
     error_log('specify commit tag.');
     exit;
 }
 
-$gitcmd = sprintf('git diff --name-only %s', $arg[1]);
+$gitcmd = sprintf('git diff --name-status %s', $arg[1]);
 ob_start();
 passthru($gitcmd, $ret);
 $buff = ob_get_clean();
@@ -36,7 +36,7 @@ if (file_exists($basedir))
             if (strncasecmp($confirm, "o", 1) === 0){
                 system("rm -fr ".$basedir);
             }
-        }
+        } 
     } while(!in_array($ret, array('o', 'c', 'r')));
 }
 if (!is_dir($basedir)){
@@ -46,14 +46,31 @@ if (!is_dir($basedir)){
 $basedir = rtrim($basedir, '/');
 
 $files = explode(PHP_EOL, $buff);
+$delete = array();
 foreach ($files as $file){
-    $dir = $basedir."/".dirname($file);
-    if (!is_dir($dir)){
-        mkdir_p($dir);
+    $file = trim($file);
+    if (!$file){
+        continue;
     }
-    copy($file, $basedir."/".$file);
+    $file = explode("\t", $file);
+    $status = $file[0];
+    $file   = $file[1];
+    if (strcasecmp($status, 'd') === 0){
+        $delete[] = "rm -f ".$file;
+        continue;
+    }
+    if (file_exists($file)){
+        $dir = $basedir."/".dirname($file);
+        if (!is_dir($dir)){
+            mkdir_p($dir);
+        }
+        copy($file, $basedir."/".$file);
+        printf("copy %s\n", $file);
+    }
 }
-
+if ($delete){
+    file_put_contents($basedir."/delete_file.sh", implode("\n", $delete));
+}
 exit();
 
 
@@ -64,7 +81,7 @@ function getSTDIN($msg)
     do {
         $line = trim(fgets(STDIN));
     } while (!$line);
-
+    
     return $line;
 }
 
@@ -85,6 +102,6 @@ function mkdir_p($dir)
             return false;
         }
     }
-
+    
     return mkdir($dir);
 }
