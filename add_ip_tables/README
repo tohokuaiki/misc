@@ -1,1 +1,11 @@
-# IPアドレスをiptablesに追加
+# IPアドレスをiptablesに追加する簡易的なスクリプト
+ブラウザからindex.phpにアクセスすることで、そのIPアドレスをSSH許可のIPTablesに入れます。
+
+## index.php
+ブラウザでアクセスするエントリポイント。
+
+## config.php
+設定値
+
+## iptables_add_required_ip.sh
+root権限でcronさせておく。
