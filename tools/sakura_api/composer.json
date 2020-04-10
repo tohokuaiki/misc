@@ -1,0 +1,15 @@
+{
+    "name": "vagrant/sakura_cloug_api",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ITOH Takashi",
+            "email": ""
+        }
+    ],
+    "require": {
+        "sakura-internet/saklient": "0.0.2.11",
+        "ulrichsg/getopt-php": "^3.3"
+    }
+}
